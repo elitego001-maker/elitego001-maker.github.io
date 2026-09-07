@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Does AES Encryption Actually Work?</title>
+<meta name="description" content="Substitution, permutation, and rounds — breaking AES down by hand, one step at a time.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d0d0d'/><text x='4' y='23' font-family='monospace' font-size='18' fill='%234ade80'>&gt;_</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="shell">
+  <main class="article-shell">
+    <nav class="article-nav-top">
+      <a href="/howits/">&larr; How it's</a>
+      <a href="/">Home</a>
+    </nav>
+
+    <p class="article-meta">Published: Jul 9, 2025 · 8 min read · #cryptography #aes #fundamentals</p>
+
+    <h1 class="article-title">How Does AES Encryption Actually Work?</h1>
+
+    <p class="article-desc">
+      Substitution, permutation, and rounds — breaking AES down by hand,
+      one step at a time.
+    </p>
+
+    <div class="contents-box">
+      <p class="prompt">$ cat contents.txt</p>
+      <ul class="contents-list">
+        <li><a href="#chapter-1"><span class="chapter-num">1.</span>Why AES, and What It Actually Encrypts</a></li>
+        <li><a href="#chapter-2"><span class="chapter-num">2.</span>Inside a Round</a></li>
+        <li><a href="#chapter-3"><span class="chapter-num">3.</span>Why It's Still Considered Safe</a></li>
+      </ul>
+    </div>
+
+    <article class="article-body">
+      <p>
+        AES shows up everywhere — disk encryption, TLS, password managers,
+        the Wi-Fi in your house — but most explanations either wave their
+        hands at "it scrambles the data" or dive straight into Galois field
+        math. Neither actually tells you what happens to your bytes. Here's
+        the version in between.
+      </p>
+
+      <div class="chapter-marker" id="chapter-1">
+        <span class="chapter-label">Chapter 1 —</span>
+        <span class="chapter-title">Why AES, and What It Actually Encrypts</span>
+      </div>
+
+      <p>
+        AES is a <em>block cipher</em>: it doesn't encrypt a stream of data
+        continuously, it chops your plaintext into fixed 128-bit (16-byte)
+        blocks and scrambles each one using the same key, through the same
+        fixed sequence of steps, repeated for a number of <em>rounds</em> —
+        10, 12, or 14, depending on whether your key is 128, 192, or 256 bits.
+      </p>
+
+      <p>
+        Each block is arranged into a 4×4 grid of bytes called the
+        <strong>state</strong>. Every round transforms that grid in place.
+        By the time the last round finishes, the output looks like random
+        noise — but it's fully reversible if you have the key.
+      </p>
+
+      <div class="chapter-marker" id="chapter-2">
+        <span class="chapter-label">Chapter 2 —</span>
+        <span class="chapter-title">Inside a Round</span>
+      </div>
+
+      <p>
+        Every full round runs four operations, in this order:
+      </p>
+
+      <ul>
+        <li><strong>SubBytes</strong> — each byte in the state is swapped for another byte using a fixed lookup table (the S-box), which is what makes AES non-linear and resistant to simple algebra-based attacks</li>
+        <li><strong>ShiftRows</strong> — each row of the 4×4 grid is rotated left by a different amount, spreading byte positions across columns</li>
+        <li><strong>MixColumns</strong> — each column is multiplied against a fixed matrix inside a Galois field, so a change in one byte affects every byte in that column</li>
+        <li><strong>AddRoundKey</strong> — the state is XORed with a round-specific subkey, derived from your original key via the key schedule</li>
+      </ul>
+
+      <blockquote>
+        Skip MixColumns and a single-byte change in the plaintext only ever
+        affects one byte of ciphertext. Keep it, and after a couple of
+        rounds a single flipped bit changes roughly half the output —
+        that property is called the avalanche effect.
+      </blockquote>
+
+      <p>
+        The very last round drops <code>MixColumns</code> entirely — a
+        deliberate asymmetry that makes decryption cleanly reverse the
+        exact same steps in the opposite order.
+      </p>
+
+      <div class="code-block">
+        <span class="code-lang">python</span>
+        <pre><code>state = plaintext_block
+for round in range(num_rounds - 1):
+    state = sub_bytes(state)
+    state = shift_rows(state)
+    state = mix_columns(state)
+    state = add_round_key(state, round_keys[round])
+
+# final round: no MixColumns
+state = sub_bytes(state)
+state = shift_rows(state)
+ciphertext_block = add_round_key(state, round_keys[-1])</code></pre>
+      </div>
+
+      <div class="chapter-marker" id="chapter-3">
+        <span class="chapter-label">Chapter 3 —</span>
+        <span class="chapter-title">Why It's Still Considered Safe</span>
+      </div>
+
+      <p>
+        No practical attack breaks full AES faster than brute force today —
+        the best known shortcuts shave only a handful of bits off the
+        effective key strength, nowhere near enough to matter at 128 bits,
+        let alone 256. The real-world failures you read about
+        (Heartbleed, WEP, padding oracle attacks) are almost never AES
+        itself — they're bugs in how it's implemented or used: reused IVs,
+        weak key derivation, or a mode of operation that leaks structure.
+      </p>
+
+      <p>
+        The algorithm is the boring, solid part. The mistakes happen one
+        layer up.
+      </p>
+    </article>
+
+    <nav class="article-nav">
+      <a class="prev" href="/howits/">&larr; How it's</a>
+      <a class="next" href="/">Home &rarr;</a>
+    </nav>
+    <hr class="rule">
+
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 Sujith R</span>
+    <span class="footer-links">
+      <a href="https://github.com/elitego001-maker" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/sujith-r-2164b0247" target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="mailto:jerinsujith23@gmail.com">Email Me</a>
+    </span>
+  </footer>
+</div>
+</body>
+</html>

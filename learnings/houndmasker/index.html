@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HoundMasker — Privacy-Preserving Attack Path Analysis for BloodHound</title>
+<meta name="description" content="A breakdown of how HoundMasker strips sensitive node data from BloodHound exports while keeping attack path graphs intact.">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d0d0d'/><text x='4' y='23' font-family='monospace' font-size='18' fill='%234ade80'>&gt;_</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="shell">
+  <main class="article-shell">
+    <nav class="article-nav-top">
+      <a href="/learnings/">&larr; Learnings</a>
+      <a href="/">Home</a>
+    </nav>
+
+    <p class="article-meta">Published: Jan 12, 2026 · 12 min read · #tools #bloodhound #privacy</p>
+
+    <h1 class="article-title">HoundMasker — Privacy-Preserving Attack Path Analysis for BloodHound</h1>
+
+    <p class="article-desc">
+      A breakdown of how HoundMasker strips sensitive node data from
+      BloodHound exports while keeping attack path graphs intact.
+    </p>
+
+    <div class="contents-box">
+      <p class="prompt">$ cat contents.txt</p>
+      <ul class="contents-list">
+        <li><a href="#chapter-1"><span class="chapter-num">1.</span>What Is HoundMasker?</a></li>
+        <li><a href="#chapter-2"><span class="chapter-num">2.</span>How the Masking Works</a></li>
+        <li><a href="#chapter-3"><span class="chapter-num">3.</span>Where It Falls Short</a></li>
+      </ul>
+    </div>
+
+    <article class="article-body">
+      <p>
+        BloodHound is one of the most useful tools in an internal penetration test
+        or red team engagement, but its output is a liability the moment it leaves
+        a client's network. Usernames, group names, computer hostnames, and full
+        attack paths sit in plaintext JSON — exactly the kind of data you don't
+        want floating around in a report attachment, a shared drive, or a GitHub
+        gist someone forgot to delete. HoundMasker exists to solve one narrow
+        problem: how do you talk about an attack path without exposing who or
+        what is actually in it?
+      </p>
+
+      <div class="chapter-marker" id="chapter-1">
+        <span class="chapter-label">Chapter 1 —</span>
+        <span class="chapter-title">What Is HoundMasker?</span>
+      </div>
+
+      <p>
+        HoundMasker is a preprocessing layer that sits between a raw BloodHound
+        export and anything downstream — a report, a screenshot, a shared Neo4j
+        instance. It walks the JSON, replaces every identifiable node property
+        with a deterministic pseudonym, and leaves the graph topology untouched.
+        The result is a dataset you can share, archive, or hand to a third party
+        without leaking a single real identity, while every relationship an
+        attacker could exploit is still fully visible.
+      </p>
+
+      <blockquote>
+        The goal isn't to anonymize the technique. It's to anonymize the people
+        and machines the technique was demonstrated on.
+      </blockquote>
+
+      <h2>Why This Matters</h2>
+      <p>
+        Most teams solve this problem by redacting screenshots after the fact,
+        which is slow, error-prone, and falls apart the moment someone needs the
+        underlying data for a re-test or a retrospective. Masking at the data
+        layer means every downstream artifact — reports, dashboards, training
+        material — inherits the protection automatically.
+      </p>
+
+      <div class="chapter-marker" id="chapter-2">
+        <span class="chapter-label">Chapter 2 —</span>
+        <span class="chapter-title">How the Masking Works</span>
+      </div>
+
+      <p>
+        HoundMasker builds a deterministic mapping table keyed off each node's
+        object ID, so the same principal always resolves to the same pseudonym
+        across an entire dataset — <code>DC01.CORP.LOCAL</code> becomes
+        something like <code>HOST-7F3A.MASKED</code> every time it appears,
+        whether that's in a node property or an edge reference.
+      </p>
+
+      <div class="code-block">
+        <span class="code-lang">python</span>
+        <pre><code>def mask_identity(object_id: str, kind: str, salt: bytes) -> str:
+    digest = hashlib.sha256(salt + object_id.encode()).hexdigest()[:8]
+    prefix = {"User": "USR", "Computer": "HOST", "Group": "GRP"}[kind]
+    return f"{prefix}-{digest.upper()}.MASKED"</code></pre>
+      </div>
+
+      <p>
+        Everything else — session data, ACL edges, group membership, delegation
+        rights — is left exactly as BloodHound reported it. An analyst reviewing
+        the masked graph can still trace a full path from an initial foothold to
+        Domain Admin; they just can't tell you which real user or machine sits at
+        each hop.
+      </p>
+
+      <h3>Running It</h3>
+      <p>
+        The CLI takes a raw export directory and a salt, and writes a masked
+        copy alongside it:
+      </p>
+
+      <div class="code-block">
+        <span class="code-lang">bash</span>
+        <pre><code>houndmasker --input ./bloodhound_export --salt "$(openssl rand -hex 16)" --output ./masked_export</code></pre>
+      </div>
+
+      <p>
+        The salt is generated per engagement and never written to disk alongside
+        the masked data, which means the mapping can't be reversed without it —
+        even by someone who gets full access to the masked export.
+      </p>
+
+      <ul>
+        <li>Deterministic per engagement, not globally — the same host masks differently across two separate assessments</li>
+        <li>Topology-preserving — every edge, path, and privilege relationship survives untouched</li>
+        <li>Zero external dependencies beyond the Python standard library</li>
+      </ul>
+
+      <div class="chapter-marker" id="chapter-3">
+        <span class="chapter-label">Chapter 3 —</span>
+        <span class="chapter-title">Where It Falls Short</span>
+      </div>
+
+      <p>
+        HoundMasker doesn't protect against re-identification from context.
+        A masked graph with exactly one Domain Admin, one file server, and a
+        distinctive OU structure can still be fingerprinted by someone who knows
+        the environment. It also doesn't mask free-text fields like descriptions
+        or SPNs that sometimes leak identity — those need to be scrubbed
+        separately before an export is considered safe to share.
+      </p>
+
+      <hr>
+
+      <p>
+        The full source, along with the mapping-table format and a test suite
+        built against sample BloodHound exports, is available on GitHub. If
+        you're regularly handing off attack path data to clients or teammates
+        outside the assessment, it's a small tool that removes a recurring risk.
+      </p>
+    </article>
+
+    <nav class="article-nav">
+      <a class="prev" href="/learnings/">&larr; Learnings</a>
+      <a class="next" href="/">Home &rarr;</a>
+    </nav>
+    <hr class="rule">
+
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 Sujith R</span>
+    <span class="footer-links">
+      <a href="https://github.com/elitego001-maker" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/sujith-r-2164b0247" target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="mailto:jerinsujith23@gmail.com">Email Me</a>
+    </span>
+  </footer>
+</div>
+</body>
+</html>

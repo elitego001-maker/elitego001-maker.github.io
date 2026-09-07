@@ -2,18 +2,30 @@
 <!-- Add a <url> entry for each new post you publish. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://&lt;your-username&gt;.github.io/</loc>
+    <loc>https://elitego001-maker.github.io/</loc>
   </url>
   <url>
-    <loc>https://&lt;your-username&gt;.github.io/learnings/</loc>
+    <loc>https://elitego001-maker.github.io/learnings/</loc>
   </url>
   <url>
-    <loc>https://&lt;your-username&gt;.github.io/howits/</loc>
+    <loc>https://elitego001-maker.github.io/howits/</loc>
   </url>
   <url>
-    <loc>https://&lt;your-username&gt;.github.io/galaxy/</loc>
+    <loc>https://elitego001-maker.github.io/galaxy/</loc>
   </url>
   <url>
-    <loc>https://&lt;your-username&gt;.github.io/foryou/</loc>
+    <loc>https://elitego001-maker.github.io/foryou/</loc>
+  </url>
+  <url>
+    <loc>https://elitego001-maker.github.io/learnings/houndmasker/</loc>
+  </url>
+  <url>
+    <loc>https://elitego001-maker.github.io/howits/how-does-aes-encryption-actually-work/</loc>
+  </url>
+  <url>
+    <loc>https://elitego001-maker.github.io/galaxy/the-pale-blue-dot/</loc>
+  </url>
+  <url>
+    <loc>https://elitego001-maker.github.io/foryou/three-tools-i-use-every-day/</loc>
   </url>
 </urlset>
