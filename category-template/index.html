@@ -1,0 +1,74 @@
+<!--
+  CATEGORY TEMPLATE — not linked from any page, not part of the live site nav.
+  Use this when you want a whole new section (like Learnings or Galaxy),
+  not just a new post inside an existing one.
+
+  HOW TO ADD A NEW CATEGORY:
+  1. Copy this whole "category-template" folder, rename it to a short
+     lowercase slug that will become the URL, e.g.
+     category-template/ -> projects/
+  2. Fill in the placeholders below: [CATEGORY NAME], [CATEGORY SUBTITLE].
+  3. Add posts to it exactly like the existing categories — copy
+     /post-template/, fill it in, and add a <article class="post-item">
+     entry here linking to it. See /post-template/ for that workflow.
+  4. Add the new category to the home page nav (/index.html) — copy one
+     of the <div class="tree-item"> blocks in the "$ nano hippocampus.txt"
+     block, point its href at "/[category-slug]/", and give it a one-line
+     muted sub-label in parentheses.
+  5. Add "https://<your-domain>/[category-slug]/" as a new <url> entry
+     in /sitemap.xml.
+  6. Delete this comment block before publishing.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[CATEGORY NAME] — Sujith R</title>
+<meta name="description" content="[CATEGORY SUBTITLE]">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d0d0d'/><text x='4' y='23' font-family='monospace' font-size='18' fill='%234ade80'>&gt;_</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="shell">
+  <main class="listing">
+    <a class="back-link" href="/">&larr; Back</a>
+    <h1 class="page-title">[CATEGORY NAME]</h1>
+    <p class="page-subtitle">[CATEGORY SUBTITLE]</p>
+    <hr class="rule">
+
+    <!-- Add posts here as <article class="post-item"> blocks, grouped
+         under a <h2 class="year-header">YYYY</h2>. See /post-template/ for
+         the matching article page to link each post title to. Until you
+         have a first post, leave the empty-state line below in place. -->
+    <p class="empty-state">No posts yet — check back soon.</p>
+
+    <!-- Example of a filled-in post entry — copy this block, delete the
+         empty-state line above, once you have a real post to link:
+    <h2 class="year-header">2026</h2>
+    <div class="post-list">
+      <article class="post-item">
+        <div class="post-item-row">
+          <a class="post-title" href="/[category-slug]/[post-slug]/">[Post Title]</a>
+          <span class="post-date">[Mon DD, YYYY]</span>
+        </div>
+        <p class="post-desc">[One-line description or tag.]</p>
+      </article>
+    </div>
+    -->
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 Sujith R</span>
+    <span class="footer-links">
+      <a href="https://github.com/elitego001-maker" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://www.linkedin.com/in/sujith-r-2164b0247" target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="mailto:jerinsujith23@gmail.com">Email Me</a>
+    </span>
+  </footer>
+</div>
+</body>
+</html>

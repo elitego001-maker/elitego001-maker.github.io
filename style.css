@@ -61,6 +61,8 @@ img {
 
 .shell main {
   flex: 1;
+  width: 100%;
+  min-width: 0;
 }
 
 /* ============================================================
@@ -416,6 +418,16 @@ img {
   padding: 4px 20px;
   border-left: 3px solid var(--accent);
   color: var(--muted);
+}
+
+.article-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-body a:hover {
+  color: var(--text);
 }
 
 .article-body code {
