@@ -1,0 +1,119 @@
+<!--
+  POST TEMPLATE — not linked from any page, not part of the live site nav.
+  This folder is your starting point for a new article.
+
+  HOW TO ADD A NEW POST:
+  1. Copy this whole "template" folder, rename it to a URL-friendly slug,
+     e.g. template/ -> learnings/lateral-movement-detection/
+  2. Fill in the placeholders below: [POST TITLE], [DATE], [READ TIME],
+     [#tags], [CATEGORY], [CATEGORY PATH], and the Contents/Chapter blocks.
+  3. Delete any chapters/blocks you don't need. Add more chapter-marker
+     blocks by copying the pattern (Chapter 4, Chapter 5, ...).
+  4. Add a matching <article class="post-item"> entry (title + date + one-line
+     description) to the relevant category listing page, e.g. learnings/index.html,
+     pointing its href at your new folder.
+  5. Delete this comment block before publishing.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[POST TITLE] — [Your Name]</title>
+<meta name="description" content="[One-sentence description of the post, used for previews and SEO.]">
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230d0d0d'/><text x='4' y='23' font-family='monospace' font-size='18' fill='%234ade80'>&gt;_</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="shell">
+  <main class="article-shell">
+    <nav class="article-nav-top">
+      <a href="/[CATEGORY PATH]/">&larr; [CATEGORY]</a>
+      <a href="/">Home</a>
+    </nav>
+
+    <p class="article-meta">Published: [Mon DD, YYYY] · [N] min read · #[tag1] #[tag2]</p>
+
+    <h1 class="article-title">[POST TITLE]</h1>
+
+    <p class="article-desc">
+      [One to two sentence summary of the post — shown under the title,
+      same text as the meta description above works well here too.]
+    </p>
+
+    <div class="contents-box">
+      <p class="prompt">$ cat contents.txt</p>
+      <ul class="contents-list">
+        <li><a href="#chapter-1"><span class="chapter-num">1.</span>[What's the problem I noticed?]</a></li>
+        <li><a href="#chapter-2"><span class="chapter-num">2.</span>[How was this built?]</a></li>
+        <li><a href="#chapter-3"><span class="chapter-num">3.</span>[What would I do differently?]</a></li>
+      </ul>
+    </div>
+
+    <article class="article-body">
+      <p>
+        [Opening paragraph — set up the problem or the hook. This renders in
+        Inter at 16px/1.75 line-height, the same reading metrics as the rest
+        of the body text.]
+      </p>
+
+      <div class="chapter-marker" id="chapter-1">
+        <span class="chapter-label">Chapter 1 —</span>
+        <span class="chapter-title">[What's the problem I noticed?]</span>
+      </div>
+
+      <p>[Chapter 1 content.]</p>
+
+      <blockquote>
+        [Optional pull-quote or key takeaway.]
+      </blockquote>
+
+      <div class="chapter-marker" id="chapter-2">
+        <span class="chapter-label">Chapter 2 —</span>
+        <span class="chapter-title">[How was this built?]</span>
+      </div>
+
+      <p>
+        [Chapter 2 content. Inline code like <code>this</code> renders in
+        accent green on a dark chip.]
+      </p>
+
+      <div class="code-block">
+        <span class="code-lang">bash</span>
+        <pre><code>echo "replace this with a real command or snippet"</code></pre>
+      </div>
+
+      <ul>
+        <li>[Bullet point one]</li>
+        <li>[Bullet point two]</li>
+      </ul>
+
+      <div class="chapter-marker" id="chapter-3">
+        <span class="chapter-label">Chapter 3 —</span>
+        <span class="chapter-title">[What would I do differently?]</span>
+      </div>
+
+      <p>[Closing chapter — takeaways, caveats, what's next.]</p>
+    </article>
+
+    <nav class="article-nav">
+      <a class="prev" href="/[CATEGORY PATH]/">&larr; [CATEGORY]</a>
+      <a class="next" href="/">Home &rarr;</a>
+    </nav>
+    <hr class="rule">
+  </main>
+
+  <footer class="site-footer">
+    <span>&copy; 2026 [Your Name]</span>
+    <span class="footer-links">
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="mailto:you@example.com">Email Me</a>
+    </span>
+  </footer>
+</div>
+</body>
+</html>

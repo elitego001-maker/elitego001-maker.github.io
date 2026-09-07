@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Add a <url> entry for each new post you publish. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://&lt;your-username&gt;.github.io/</loc>
+  </url>
+  <url>
+    <loc>https://&lt;your-username&gt;.github.io/learnings/</loc>
+  </url>
+  <url>
+    <loc>https://&lt;your-username&gt;.github.io/howits/</loc>
+  </url>
+  <url>
+    <loc>https://&lt;your-username&gt;.github.io/galaxy/</loc>
+  </url>
+  <url>
+    <loc>https://&lt;your-username&gt;.github.io/foryou/</loc>
+  </url>
+</urlset>
