@@ -261,6 +261,15 @@ img {
   font-size: 14px;
 }
 
+.accent-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.accent-link:hover {
+  text-decoration: underline;
+}
+
 /* ============================================================
    Article page
    ============================================================ */
