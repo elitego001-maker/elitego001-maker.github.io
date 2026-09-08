@@ -1,20 +1,21 @@
 /* ============================================================
-   Design tokens
+   Design tokens — Star Chart
    ============================================================ */
 :root {
-  --bg: #0d0d0d;
-  --surface: #111111;
-  --text: #e8e6e3;
-  --text-prose: #d1cfc9;
-  --text-about: #b0aea9;
-  --muted: #6b6b6b;
-  --accent: #4ade80;
-  --border: #1f1f1f;
-  --code-bg: #161616;
-  --inline-code-bg: #1a1a1a;
+  --bg: #0d1020;
+  --surface: #141833;
+  --text: #ece3cf;
+  --text-prose: #cfc9b8;
+  --text-about: #b7bbd6;
+  --muted: #6f7396;
+  --accent: #d4af6a;
+  --border: #262b4a;
+  --code-bg: #12172c;
+  --inline-code-bg: #1b2040;
 
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'EB Garamond', Georgia, 'Times New Roman', serif;
 
   --measure-article: 680px;
   --measure-listing: 900px;
@@ -33,12 +34,27 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
   font-size: 14px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(1.4px 1.4px at 6% 12%, rgba(236,227,207,.55), transparent),
+    radial-gradient(1px 1px at 18% 48%, rgba(236,227,207,.35), transparent),
+    radial-gradient(1.8px 1.8px at 29% 20%, rgba(236,227,207,.6), transparent),
+    radial-gradient(1px 1px at 40% 65%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.4px 1.4px at 52% 8%, rgba(236,227,207,.5), transparent),
+    radial-gradient(1px 1px at 63% 38%, rgba(236,227,207,.35), transparent),
+    radial-gradient(1.8px 1.8px at 74% 55%, rgba(236,227,207,.6), transparent),
+    radial-gradient(1px 1px at 84% 24%, rgba(236,227,207,.35), transparent),
+    radial-gradient(1.4px 1.4px at 92% 70%, rgba(236,227,207,.45), transparent),
+    radial-gradient(1px 1px at 12% 82%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.6px 1.6px at 47% 90%, rgba(236,227,207,.4), transparent),
+    radial-gradient(1px 1px at 88% 88%, rgba(236,227,207,.3), transparent);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 a {
@@ -66,11 +82,14 @@ img {
 }
 
 /* ============================================================
-   Prompt line (terminal style headers used across pages)
+   Plate label (small tracked eyebrow used across pages)
    ============================================================ */
 .prompt {
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
   color: var(--accent);
   margin: 0 0 20px;
 }
@@ -86,35 +105,65 @@ img {
 }
 
 .nav-block .filetree {
-  font-family: var(--font-mono);
+  position: relative;
+  padding-left: 22px;
+}
+
+.nav-block .filetree::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--border);
 }
 
 .tree-item {
-  margin: 0 0 22px 24px;
+  position: relative;
+  margin: 0 0 24px;
+}
+
+.tree-item::before {
+  content: '';
+  position: absolute;
+  left: -22px;
+  top: 7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px 2px rgba(212, 175, 106, .45);
 }
 
 .tree-link {
   display: inline-block;
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 20px;
   color: var(--text);
   text-decoration: none;
 }
 
 .tree-link:hover {
+  color: var(--accent);
   text-decoration: underline;
-  text-decoration-color: var(--accent);
 }
 
 .tree-sub {
-  margin: 4px 0 0 24px;
-  font-size: 12px;
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
   color: var(--muted);
   cursor: default;
 }
 
 .about-block h1 {
-  font-family: var(--font-mono);
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 20px;
   font-weight: 500;
   color: var(--text);
   margin: 0 0 16px;
@@ -122,8 +171,9 @@ img {
 
 .about-block p {
   color: var(--text-about);
+  font-family: var(--font-body);
   font-size: 14px;
-  line-height: 1.7;
+  line-height: 1.75;
   max-width: 440px;
   margin: 0;
 }
@@ -140,8 +190,10 @@ img {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  font-family: var(--font-mono);
-  font-size: 12px;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
@@ -152,7 +204,7 @@ img {
 
 .site-footer a:hover {
   text-decoration: underline;
-  color: var(--text);
+  color: var(--accent);
 }
 
 .footer-links a {
@@ -168,7 +220,7 @@ img {
 
 .back-link {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 13px;
   color: var(--muted);
   text-decoration: none;
@@ -176,12 +228,13 @@ img {
 }
 
 .back-link:hover {
+  color: var(--accent);
   text-decoration: underline;
 }
 
 .page-title {
-  font-family: var(--font-mono);
-  font-size: 36px;
+  font-family: var(--font-display);
+  font-size: 38px;
   font-weight: 500;
   color: var(--text);
   line-height: 1.3;
@@ -195,6 +248,16 @@ img {
   margin: 0 0 32px;
 }
 
+.log-quote {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted);
+  background: var(--inline-code-bg);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
 .rule {
   border: none;
   border-top: 1px solid var(--border);
@@ -202,9 +265,12 @@ img {
 }
 
 .year-header {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
   margin: 0 0 20px;
 }
 
@@ -229,8 +295,9 @@ img {
 }
 
 .post-title {
-  font-family: var(--font-mono);
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 18px;
   color: var(--text);
   text-decoration: none;
 }
@@ -249,6 +316,7 @@ img {
 
 .post-desc {
   margin: 8px 0 0;
+  font-family: var(--font-body);
   font-size: 13px;
   color: var(--muted);
   max-width: 640px;
@@ -256,9 +324,10 @@ img {
 
 .empty-state {
   padding: 8px 0 32px;
+  font-family: var(--font-display);
   color: var(--muted);
   font-style: italic;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .accent-link {
@@ -286,15 +355,17 @@ img {
 }
 
 .article-nav-top a {
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  letter-spacing: .05em;
+  text-transform: uppercase;
   color: var(--muted);
   text-decoration: none;
 }
 
 .article-nav-top a:hover {
   text-decoration: underline;
-  color: var(--text);
+  color: var(--accent);
 }
 
 .article-meta {
@@ -305,8 +376,8 @@ img {
 }
 
 .article-title {
-  font-family: var(--font-mono);
-  font-size: 36px;
+  font-family: var(--font-display);
+  font-size: 38px;
   font-weight: 500;
   color: var(--text);
   line-height: 1.3;
@@ -314,8 +385,8 @@ img {
 }
 
 .article-desc {
-  font-family: var(--font-body);
-  font-size: 15px;
+  font-family: var(--font-display);
+  font-size: 16px;
   color: var(--text-about);
   font-style: italic;
   line-height: 1.7;
@@ -333,7 +404,7 @@ img {
 
 .article-body h2,
 .article-body h3 {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   color: var(--text);
   line-height: 1.3;
   margin: 48px 0 16px;
@@ -342,11 +413,11 @@ img {
 }
 
 .article-body h2 {
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .article-body h3 {
-  font-size: 18px;
+  font-size: 19px;
 }
 
 .contents-box {
@@ -369,8 +440,8 @@ img {
 
 .contents-list li {
   margin: 0 0 8px;
-  font-family: var(--font-mono);
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: 14.5px;
 }
 
 .contents-list li:last-child {
@@ -393,18 +464,27 @@ img {
 }
 
 .chapter-marker {
-  font-family: var(--font-mono);
-  font-size: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 10px;
   margin: 64px 0 20px;
-  line-height: 1.3;
   scroll-margin-top: 24px;
 }
 
 .chapter-marker .chapter-label {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
   color: var(--accent);
 }
 
 .chapter-marker .chapter-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 25px;
   color: var(--text);
 }
 
@@ -427,6 +507,9 @@ img {
   padding: 4px 20px;
   border-left: 3px solid var(--accent);
   color: var(--muted);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
 }
 
 .article-body a {
@@ -493,6 +576,7 @@ img {
 
 .article-image figcaption {
   margin: 10px 0 0;
+  font-family: var(--font-body);
   font-size: 12px;
   color: var(--muted);
   text-align: center;
@@ -503,8 +587,9 @@ img {
   justify-content: space-between;
   gap: 24px;
   padding: 24px 0;
-  font-family: var(--font-mono);
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  letter-spacing: .03em;
 }
 
 .article-nav a {
@@ -536,7 +621,7 @@ img {
 
   .page-title,
   .article-title {
-    font-size: 28px;
+    font-size: 30px;
   }
 
   .site-footer {
