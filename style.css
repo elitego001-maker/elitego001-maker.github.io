@@ -52,7 +52,25 @@ body {
     radial-gradient(1.4px 1.4px at 92% 70%, rgba(236,227,207,.45), transparent),
     radial-gradient(1px 1px at 12% 82%, rgba(236,227,207,.3), transparent),
     radial-gradient(1.6px 1.6px at 47% 90%, rgba(236,227,207,.4), transparent),
-    radial-gradient(1px 1px at 88% 88%, rgba(236,227,207,.3), transparent);
+    radial-gradient(1px 1px at 88% 88%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1px 1px at 2% 55%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.6px 1.6px at 10% 25%, rgba(236,227,207,.5), transparent),
+    radial-gradient(1px 1px at 22% 8%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.4px 1.4px at 25% 78%, rgba(236,227,207,.45), transparent),
+    radial-gradient(1px 1px at 33% 35%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.8px 1.8px at 36% 95%, rgba(236,227,207,.55), transparent),
+    radial-gradient(1px 1px at 44% 45%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.4px 1.4px at 49% 60%, rgba(236,227,207,.4), transparent),
+    radial-gradient(1px 1px at 57% 20%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.6px 1.6px at 60% 80%, rgba(236,227,207,.5), transparent),
+    radial-gradient(1px 1px at 68% 10%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.8px 1.8px at 72% 68%, rgba(236,227,207,.55), transparent),
+    radial-gradient(1px 1px at 80% 42%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.4px 1.4px at 85% 60%, rgba(236,227,207,.45), transparent),
+    radial-gradient(1px 1px at 95% 15%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.6px 1.6px at 97% 50%, rgba(236,227,207,.5), transparent),
+    radial-gradient(1px 1px at 15% 65%, rgba(236,227,207,.3), transparent),
+    radial-gradient(1.4px 1.4px at 78% 88%, rgba(236,227,207,.4), transparent);
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -67,6 +85,7 @@ img {
 }
 
 .shell {
+  position: relative;
   max-width: 1080px;
   margin: 0 auto;
   padding: 48px 24px 0;
@@ -79,6 +98,85 @@ img {
   flex: 1;
   width: 100%;
   min-width: 0;
+}
+
+/* ============================================================
+   Moon & comet (home page only)
+   ============================================================ */
+.moon {
+  position: absolute;
+  z-index: -1;
+  top: 4px;
+  right: 8px;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #f4ecd8 0%, #d9cba8 38%, #a99c7c 72%, #7d7259 100%);
+  box-shadow: 0 0 26px 6px rgba(228, 214, 178, .22);
+  pointer-events: none;
+}
+
+.moon::before,
+.moon::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .14);
+}
+
+.moon::before {
+  width: 16px;
+  height: 16px;
+  top: 20px;
+  left: 16px;
+}
+
+.moon::after {
+  width: 10px;
+  height: 10px;
+  top: 44px;
+  left: 40px;
+}
+
+.comet {
+  position: absolute;
+  z-index: -1;
+  top: 6%;
+  left: -4%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fdf6e3;
+  box-shadow: 0 0 6px 2px rgba(253, 246, 227, .75);
+  pointer-events: none;
+  animation: comet-fly 9s ease-in infinite;
+}
+
+.comet::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  width: 110px;
+  height: 1.5px;
+  background: linear-gradient(to left, rgba(253, 246, 227, .8), transparent);
+  transform-origin: right center;
+}
+
+@keyframes comet-fly {
+  0% { transform: translate(0, 0) rotate(28deg); opacity: 0; }
+  6% { opacity: 1; }
+  40% { opacity: 1; }
+  52% { opacity: 0; }
+  100% { transform: translate(78vw, 36vh) rotate(28deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comet {
+    animation: none;
+    opacity: 1;
+    transform: translate(35vw, 16vh) rotate(28deg);
+  }
 }
 
 /* ============================================================
@@ -617,6 +715,27 @@ img {
   .home-grid {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+
+  .moon {
+    width: 50px;
+    height: 50px;
+    top: 0;
+    right: 4px;
+  }
+
+  .moon::before {
+    width: 10px;
+    height: 10px;
+    top: 12px;
+    left: 10px;
+  }
+
+  .moon::after {
+    width: 6px;
+    height: 6px;
+    top: 28px;
+    left: 26px;
   }
 
   .page-title,
